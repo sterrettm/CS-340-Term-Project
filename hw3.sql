@@ -1,5 +1,5 @@
 
--- Table initialization logic
+-- (a) Table initialization code
 
 CREATE TABLE `Users`(
     `userID` int(11) PRIMARY KEY AUTO_INCREMENT,
@@ -26,10 +26,10 @@ CREATE TABLE `UserLocations`(
 
 CREATE TABLE `PrivateMessages`(
     `messageID` int(11) PRIMARY KEY AUTO_INCREMENT,
-    `sentAt` date NOT NULL,
+    `sentAt` datetime NOT NULL,
     `sendUserID` int(11) NOT NULL,
     `recvUserID` int(11) NOT NULL,
-    `meesage` varchar(1024) NOT NULL,
+    `message` varchar(1024) NOT NULL,
     FOREIGN KEY (sendUserID) REFERENCES Users(userID),
     FOREIGN KEY (recvUserID) REFERENCES Users(userID)
 )engine=InnoDB;
@@ -41,4 +41,6 @@ CREATE TABLE `Friends`(
     FOREIGN KEY (userID2) REFERENCES Users(userID),
     PRIMARY KEY (userID1, userID2)
 )engine=InnoDB;
+
+-- (b) Sample Data
 
