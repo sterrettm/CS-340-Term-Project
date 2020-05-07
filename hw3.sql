@@ -149,3 +149,43 @@ INSERT INTO LoginTokens (tokenID, userID, issueDateTime, expiryDateTime, token) 
 (NULL,10, "2020-03-09 12:04:02.000000", "2020-12-00 12:04:02.000000", "APP");
 
 -- (c) queries
+
+-- This query gets all users that have a shared interest with the user given be the :username variable
+
+SELECT user.userID, user.username, user2.userID AS otherUserID, user2.username AS otherUsername, us1.interest
+FROM Users AS user
+JOIN UserInterests AS us1 ON user.userID = us1.userID
+JOIN UserInterests AS us2 ON us1.interest = us2.interest
+JOIN Users AS user2       ON us2.userID = user2.userID 
+WHERE user.userID <> user2.userID AND 
+user.username=:username;
+
+-- Get all private messages between two userIDs and whether the first user sent or received it, ordered by 
+-- the time the message was sent
+
+SELECT * FROM (
+(SELECT message, sentAt, "sent" as sentOrRecv FROM PrivateMessages
+WHERE sendUserID=:userID1 AND recvUserID=:userID2)
+UNION
+(SELECT message, sentAt, "recv" as sentOrRecv FROM PrivateMessages
+WHERE sendUserID=:userID2 AND recvUserID=:userID1)
+) AS x
+ORDER BY sentAt;
+
+-- This query gets all non-expired tokens for the user with username
+
+SELECT token FROM LoginTokens AS LT
+WHERE LT.userID = (SELECT userID FROM Users WHERE username=:username) AND
+LT.expiryDateTime > NOW() AND LT.issueDateTime < NOW(); 
+
+-- This query gets all the friends for the user with username
+
+SELECT other.userID, other.username FROM Users AS user
+JOIN Friends AS f ON user.userID = f.userID1
+JOIN Users AS other ON f.userID2=other.userID
+WHERE user.username=:username
+UNION
+SELECT other.userID, other.username FROM Users AS user
+JOIN Friends AS f ON user.userID = f.userID2
+JOIN Users AS other ON f.userID1=other.userID
+WHERE user.username=:username;
