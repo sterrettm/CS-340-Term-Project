@@ -200,6 +200,20 @@ INSERT INTO Users(username, password, birthDate) VALUES (:username, :password, :
 
 INSERT INTO PrivateMessages(sendUserId, recvUserId, message, sentAt) VALUES (:userId, :otherUserID, :message, :currentDateTime);
 
+-- This query removes a friend relationship between two users
+-- We need to check two conditions because our current user might be
+-- userID1 or userID2 in the friend relation
+
+DELETE FROM Friends WHERE
+(userID1 = :userID AND userID2 = :friendUserID)
+OR
+(userID1 = :friendUserID AND userID2 = :userID);
+
+-- This query deletes one of a users location values
+-- The value for the :location variable will need to be obtained from a previous query
+
+DELETE FROM UserLocations WHERE userID = :userID AND location = :location 
+
 -- Because date times are hard to deal with, and we only need to know the current one,
 -- we will make a procedure to add a new private message
 
@@ -214,6 +228,7 @@ BEGIN
     INSERT INTO PrivateMessages(sendUserID, recvUserID, message, sentAt) VALUES
     (sendID, recvID, msg, NOW());
 END $$
+
 DELIMITER ;
 
 -- We will also make a similar procedure for inserting a new login token, as this also 
