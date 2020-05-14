@@ -189,3 +189,47 @@ SELECT other.userID, other.username FROM Users AS user
 JOIN Friends AS f ON user.userID = f.userID2
 JOIN Users AS other ON f.userID1=other.userID
 WHERE user.username=:username;
+
+-- This query adds a new user to the database; it will fail with a uniqueness
+-- constraint error if the username is taken, which can be handled in the application
+
+INSERT INTO Users(username, password, birthDate) VALUES (:username, :password, :birthDate);
+
+-- This creates a new post from the currently logged in user (whose ID is referred to as userID)
+-- to another user (whose ID is referred to as otherUserID)
+
+INSERT INTO PrivateMessages(sendUserId, recvUserId, message, sentAt) VALUES (:userId, :otherUserID, :message, :currentDateTime);
+
+-- Because date times are hard to deal with, and we only need to know the current one,
+-- we will make a procedure to add a new private message
+
+DELIMITER $$
+
+CREATE PROCEDURE newPrivateMessage(
+IN sendID int(11),
+IN recvID int(11),
+IN msg varchar(1024)
+)
+BEGIN
+    INSERT INTO PrivateMessages(sendUserID, recvUserID, message, sentAt) VALUES
+    (sendID, recvID, msg, NOW());
+END $$
+DELIMITER ;
+
+-- We will also make a similar procedure for inserting a new login token, as this also 
+-- has multiple datetimes better handled in 
+-- The token value itself is 64 base-64 encoded values, generated in a 
+-- cryptographically random way in Node.js
+
+DELIMITER $$
+
+CREATE PROCEDURE newLoginToken(
+IN usrID int(11),
+IN tokenStr varchar(64),
+IN hoursToExpiry int(11))
+BEGIN
+    INSERT INTO LoginTokens(userID, token, issueDateTime, expiryDateTime) VALUES
+    (usrID, tokenStr, NOW(), (NOW() + INTERVAL hoursToExpiry HOUR));
+END $$
+
+DELIMITER ;
