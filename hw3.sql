@@ -212,7 +212,12 @@ OR
 -- This query deletes one of a users location values
 -- The value for the :location variable will need to be obtained from a previous query
 
-DELETE FROM UserLocations WHERE userID = :userID AND location = :location 
+DELETE FROM UserLocations WHERE userID = :userID AND location = :location;
+
+-- This query deletes one of a users phone numbers
+-- This will probably also need to come from a previous select query to match exactly
+
+DELETE FROM UserPhoneNumbers WHERE userID = :userID AND phoneNumber = :phoneNumber;
 
 -- Because date times are hard to deal with, and we only need to know the current one,
 -- we will make a procedure to add a new private message
