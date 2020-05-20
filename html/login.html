@@ -1,50 +1,46 @@
 <html>
 <head>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 </head>
 
 <body class="globalstyling">
     <nav>
         <div class="navbarbody">
             <div class="navbarflexleft">
-            
                 <div class="navbarbutton">
                 Logo/Name
                 </div>
-
                 <div class="navbarbutton">
                 Friend Search
                 </div>
-
                 <div class="navbarbutton">
                 Friends
                 </div>
-
                 <div class="navbarbutton">
                 Private Messages
                 </div>
-
             </div>
-            
             <div class="navbarflexright">
-                
                 <div class="createaccountbutton navbarbutton">
                 Create Account
                 </div>
-                
                 <div class="loginbutton navbarbutton">
                 Login
                 </div>
-
             </div>
         </div>
     </nav>
-
     <main>
-
-
-
+        <div class="mainbody">
+            <div class="formBox">
+                <div>Login to your account</div><br>
+                <input id="username" placeholder="Username..." type="text"> </input><br>
+                <input id="password" placeholder="Password..." type="password"> </input><br><br>
+                <button class="boxButton" style="width:90%" id="login" onclick="">Login</button><br>
+                <a class="boxButton" style="width:90%" href='signup.html'>Create a new account</a>
+            </div>
+        </div>
     </main>
 </body>
 </html>

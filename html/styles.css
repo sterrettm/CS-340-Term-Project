@@ -1,5 +1,6 @@
 .globalstyling {
     font-family: 'Roboto', sans-serif;
+    font-weight: 400;
 }
 
 .navbarbody {
@@ -30,10 +31,44 @@
 }
 
 .navbarbutton {
+    font-weight: 500;
     margin: 5px;
     padding: 5px;
     width: 120px;
     height: 45px;
     background-color: rgb(230,230,230);
     text-align: center;
+    
+    box-shadow: 1px 1px 2px;
+}
+
+.mainbody{
+    position: fixed;
+    left: 0px;
+    top: 65px;
+    bottom: 0px;
+    width: 100%;
+    background-color: rgb(240,240,240);
+    text-align: center;
+}
+
+.formBox{
+    display: inline-block;
+
+    margin-top: 50px;
+    padding: 25px;
+    
+    text-align: center;
+    background-color: rgb(255,255,255);
+}
+
+.boxButton{
+    font-size: 16px;
+    background-color: rgb(200,200,200);
+    text-decoration: none;
+    color: black;
+    margin: 10px;
+    display: inline-block;
+    
+    box-shadow: 1px 1px 2px;
 }
