@@ -1,6 +1,6 @@
 # CS-340-Term-Project
 
-#Important Note
+# Important Note
 You need to create a file called mysql.json in the folder shadow with the format:
 ```
 {
