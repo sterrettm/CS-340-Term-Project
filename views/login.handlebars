@@ -1,10 +1,17 @@
+<script>
+function tryLogin(){
+    var username = document.getElementById("username").value 
+    var password = document.getElementById("password").value
+    callLogin(username, password, function(){alert("Success")}, function(){alert("Failure")})
+}
+</script>
 <main>
     <div class="mainbody">
         <div class="formBox">
             <div>Login to your account</div><br>
             <input id="username" placeholder="Username..." type="text"> </input><br>
             <input id="password" placeholder="Password..." type="password"> </input><br><br>
-            <button class="boxButton" style="width:90%" id="login" onclick="">Login</button><br>
+            <button class="boxButton" style="width:90%" id="login" onclick="tryLogin()">Login</button><br>
             <a class="boxButton" style="width:90%" href='signup'>Create a new account</a>
         </div>
     </div>

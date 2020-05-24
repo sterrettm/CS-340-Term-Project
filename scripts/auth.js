@@ -26,6 +26,23 @@ function validateSession(req, res, callback){
 
 function login(req, res, connection){
     console.log(req.headers.authorization)
+    
+    var unencodedString = Buffer.from(req.headers.authorization.split(" ")[1],'base64').toString('ascii')
+    console.log("AUTH String: " + unencodedString)
+    var sentUsername = unencodedString.split(':')[0]
+    var sentPassword = unencodedString.split(':')[1]
+    console.log("UNAME: " + sentUsername + "\nPASSWD: " + sentPassword)
+    
+    // TODO Obviously make this a real check
+        
+    if (true){
+        res.cookie('username', sentUsername)
+        res.cookie('userID', 8)
+        res.cookie('token', "totallyAToken", {httpOnly: true})
+        res.sendStatus(200);
+    }else{
+        res.sendStatus(401)
+    }
 }
 
 function signup(req, res, connection){

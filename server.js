@@ -55,11 +55,11 @@ app.get('/', function(req,res){
 // POST Requests
 
 app.post('/api/login', function(req,res){
-    auth.login(res,res,connection)
+    auth.login(req,res,connection)
 })
 
 app.post('/api/signup', function(req,res){
-    auth.signup(res,res,connection)
+    auth.signup(req,res,connection)
 })
 
 app.listen(port, function(){})
