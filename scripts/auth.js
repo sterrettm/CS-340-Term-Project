@@ -24,11 +24,16 @@ function validateSession(req, res, callback){
     
 }
 
-function validateLogin(req, res, callback){
-    callback();
+function login(req, res, connection){
+    console.log(req.headers.authorization)
+}
+
+function signup(req, res, connection){
+    
 }
 
 module.exports = {
     validateSession: validateSession,
-    validateLogin: validateLogin
+    login: login,
+    signup: signup
 }

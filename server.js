@@ -8,6 +8,22 @@ var handlebarsEngine = handlebarsExpress.create({
 	helpers: {}
 })
 
+const mysqlParams = require("./shadow/mysql.json")
+const mysql = require('mysql')
+var connection = mysql.createConnection(mysqlParams)
+
+var err = connection.connect(function(err) {
+    if (err) {
+        console.error("FATAL ERROR: " + err.code + "\n" + err.stack);
+        process.exit(1)
+        return;
+    }
+    else
+    {
+      console.log("DB Connection Established")
+    }
+});
+
 const app = express()
 const port = 3000
 
@@ -39,11 +55,11 @@ app.get('/', function(req,res){
 // POST Requests
 
 app.post('/api/login', function(req,res){
-    
+    auth.login(res,res,connection)
 })
 
 app.post('/api/signup', function(req,res){
-    
+    auth.signup(res,res,connection)
 })
 
 app.listen(port, function(){})
