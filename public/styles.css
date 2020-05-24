@@ -1,0 +1,94 @@
+.globalstyling {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+}
+
+.navbarbody {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    height: 65px;
+    width: 100%;
+    background-color: rgb(0,162,232);
+}
+
+.navbarflexleft {
+    position: absolute;
+    margin: 0px;
+    left: 0px;
+    display: flex;
+    flex-direction: row;
+    width: 60%;
+}
+
+.navbarflexright {
+    position: absolute;
+    margin: 0px;
+    width: 40%;
+    right: 0px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.navbarbutton {
+    font-weight: 500;
+    margin: 5px;
+    padding: 5px;
+    width: 120px;
+    height: 45px;
+    background-color: rgb(230,230,230);
+    text-align: center;
+
+    box-shadow: 1px 1px 2px;
+    text-decoration: none;
+    color: black;
+}
+
+.mainbody{
+    position: fixed;
+    left: 0px;
+    top: 65px;
+    bottom: 0px;
+    width: 100%;
+    background-color: rgb(240,240,240);
+    text-align: center;
+}
+
+.formBox{
+    display: inline-block;
+
+    margin-top: 50px;
+    padding: 25px;
+
+    text-align: center;
+    background-color: rgb(255,255,255);
+}
+
+.boxButton{
+    font-size: 16px;
+    background-color: rgb(200,200,200);
+    text-decoration: none;
+    color: black;
+    margin: 10px;
+    display: inline-block;
+
+    border: none;
+
+    box-shadow: 1px 1px 2px;
+}
+
+.messageBox {
+    display: inline-block;
+
+    margin-top: 0px;
+    width: 150px;
+    padding: 25px;
+
+    text-align: center;
+    background-color: rgb(255,255,255);
+}
+
+.userMessage {
+    width: 150px;
+    word-wrap: break-word;
+}
