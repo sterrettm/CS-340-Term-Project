@@ -1,5 +1,6 @@
+const crypto = require('crypto')
 
-function validateSession(req, res, callback){
+function validateSession(req, res, pool, callback){
     // First, set default values for userID and username
     res.locals.userID = -1
     res.locals.username = "ERROR"
@@ -13,8 +14,23 @@ function validateSession(req, res, callback){
         var testToken = req.cookies.token
         
         console.log("UserID:" + testUserID + "; Username:" + testUsername + "; Token: " + testToken)
-        
-        callback()
+        pool.query('DELETE FROM LoginTokens WHERE expiryDateTime < NOW();',function(error, results, fields){
+            pool.query('SELECT COUNT(*) AS matches FROM LoginTokens WHERE userID = ? AND token = ?;',[testUserID, testToken],function(error, results, fields){
+                var matchCount = results[0].matches
+                
+                if (matchCount > 0){
+                    // The user is logged in correctly
+                    res.locals.userID = testUserID
+                    res.locals.username = testUsername
+                    
+                    callback()
+                }else{
+                    // The user is not logged in correctly
+                    // TODO should probably log the user out somehow in case of non-malicious errors like a token expiring
+                    callback()
+                }
+            }) 
+        })
     
     }else{
         // There isn't any session data to check
@@ -24,7 +40,7 @@ function validateSession(req, res, callback){
     
 }
 
-function login(req, res, connection){
+function login(req, res, pool){
     console.log(req.headers.authorization)
     
     var unencodedString = Buffer.from(req.headers.authorization.split(" ")[1],'base64').toString('ascii')
@@ -34,18 +50,34 @@ function login(req, res, connection){
     console.log("UNAME: " + sentUsername + "\nPASSWD: " + sentPassword)
     
     // TODO Obviously make this a real check
-        
-    if (true){
-        res.cookie('username', sentUsername)
-        res.cookie('userID', 8)
-        res.cookie('token', "totallyAToken", {httpOnly: true})
-        res.sendStatus(200);
-    }else{
-        res.sendStatus(401)
-    }
+    pool.query('SELECT userID FROM Users WHERE username = ?', [sentUsername], function(err, results, fields){
+        if (results.length == 1){
+            var userID = results[0].userID
+            if (true){
+                // Login was succesfull
+                
+                var newToken = crypto.randomBytes(32).toString('base64')
+                
+                pool.query('CALL newLoginToken(?,?,?);', [userID, newToken, 8], function(err, results, fields){
+                    if (err) console.log(err)
+                    res.cookie('username', sentUsername)
+                    res.cookie('userID', userID)
+                    res.cookie('token', newToken, {httpOnly: true})
+                    res.sendStatus(200);
+                })
+                
+            }else{
+                // Login failed
+                res.sendStatus(401)
+            }
+        }else{
+            // Login failed
+            res.sendStatus(401)
+        }
+    })
 }
 
-function signup(req, res, connection){
+function signup(req, res, pool){
     
 }
 

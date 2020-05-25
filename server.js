@@ -1,3 +1,4 @@
+const fs = require('fs')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const auth = require('./scripts/auth')
@@ -10,19 +11,7 @@ var handlebarsEngine = handlebarsExpress.create({
 
 const mysqlParams = require("./shadow/mysql.json")
 const mysql = require('mysql')
-var connection = mysql.createConnection(mysqlParams)
-
-var err = connection.connect(function(err) {
-    if (err) {
-        console.error("FATAL ERROR: " + err.code + "\n" + err.stack);
-        process.exit(1)
-        return;
-    }
-    else
-    {
-      console.log("DB Connection Established")
-    }
-});
+var pool = mysql.createConnection(mysqlParams)
 
 const app = express()
 const port = 3000
@@ -35,8 +24,19 @@ app.use(cookieParser())
 app.use(express.static("public"))
 
 app.use(function(req,res,next) {
+    // TEST CODE FROM STACKEXCHANGE
+    pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
+        // should actually use an error-first callback to propagate the error, but anyway...
+        if (error) return console.error(error);
+        console.log('The solution is: ', results[0].solution);
+    });
+    // END STACKEXCHANGE TEST CODE
     console.log(req.authorization)
-    auth.validateSession(req,res,next)
+    auth.validateSession(req,res,pool,function(){
+        console.log("ID   : " + res.locals.userID)
+        console.log("UNAME: " + res.locals.username)
+        next()
+    })
 })
 
 // GET Requests
@@ -55,11 +55,11 @@ app.get('/', function(req,res){
 // POST Requests
 
 app.post('/api/login', function(req,res){
-    auth.login(req,res,connection)
+    auth.login(req,res,pool)
 })
 
 app.post('/api/signup', function(req,res){
-    auth.signup(req,res,connection)
+    auth.signup(req,res,pool)
 })
 
 app.listen(port, function(){})

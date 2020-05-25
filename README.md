@@ -8,6 +8,8 @@ You need to create a file called mysql.json in the folder shadow with the format
     "port": 3306,
     "user": "<username>",
     "password": <password>",
-    "database": "<database>"
+    "database": "<database>",
+    "connectionLimit": 99,
+    "multipleStatements": true
 }
 ```
