@@ -72,3 +72,8 @@ app.post('/api/newmessage', function(req,res){
 })
 
 app.listen(port, function(){})
+
+// This heartbeat keeps the MySQL connection from being closed
+var heartbeat = setInterval(function(){
+    pool.query('SELECT 1', function(err,results,fields){})
+}, 2000)
