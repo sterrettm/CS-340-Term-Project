@@ -1,3 +1,11 @@
+<script>
+function trySignup(){
+    var username = document.getElementById("username").value 
+    var password = document.getElementById("password").value
+    var dob = document.getElementById("dob").value
+    callSignup(username, password, dob, function(){alert("Success")}, function(){alert("Failure")})
+}
+</script>
 <main>
     <div class="mainbody">
         <div class="formBox">
@@ -5,7 +13,7 @@
             <input id="username" placeholder="Username..." type="text"> </input><br>
             <input id="password" placeholder="Password..." type="password"> </input><br><br>
             <input id="dob" placeholder="Date of Birth: yyyy-mm-dd" type="text"> </input><br>
-            <button class="boxButton" style="width:90%" id="login" onclick="">Create Account</button><br>
+            <button class="boxButton" style="width:90%" id="login" onclick="trySignup()">Create Account</button><br>
         </div>
     </div>
 </main>

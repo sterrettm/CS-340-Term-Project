@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/sterrettm/CS-340-Term-Project#readme",
   "dependencies": {
-    "argon2": "^0.26.2",
+    "bcrypt": "^4.0.1",
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",

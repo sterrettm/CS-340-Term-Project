@@ -1,4 +1,5 @@
 const crypto = require('crypto')
+const bcrypt = require('bcrypt')
 
 function validateSession(req, res, pool, callback){
     // First, set default values for userID and username
@@ -51,25 +52,39 @@ function login(req, res, pool){
     
     // TODO Obviously make this a real check
     pool.query('SELECT userID FROM Users WHERE username = ?', [sentUsername], function(err, results, fields){
-        if (results.length == 1){
+        if (err){
+            res.sendStatus(500)
+        }else if (results.length == 1){
             var userID = results[0].userID
-            if (true){
-                // Login was succesfull
-                
-                var newToken = crypto.randomBytes(32).toString('base64')
-                
-                pool.query('CALL newLoginToken(?,?,?);', [userID, newToken, 8], function(err, results, fields){
-                    if (err) console.log(err)
-                    res.cookie('username', sentUsername)
-                    res.cookie('userID', userID)
-                    res.cookie('token', newToken, {httpOnly: true})
-                    res.sendStatus(200);
-                })
-                
-            }else{
-                // Login failed
-                res.sendStatus(401)
-            }
+            // Get the hashed password from signup
+            pool.query('SELECT password FROM Users WHERE userID=?',[userID],function(err,results,fields){
+                if (err){
+                    res.sendStatus(500)
+                }else{
+                    var hashedPassword = results[0].password
+                    bcrypt.compare(sentPassword, hashedPassword, function(err, result){
+                        if (err){
+                            res.sendStatus(500)
+                        }else if (result){
+                            // Login was succesfull
+                            
+                            var newToken = crypto.randomBytes(32).toString('base64')
+                            
+                            pool.query('CALL newLoginToken(?,?,?);', [userID, newToken, 8], function(err, results, fields){
+                                if (err) console.log(err)
+                                res.cookie('username', sentUsername)
+                                res.cookie('userID', userID)
+                                res.cookie('token', newToken, {httpOnly: true})
+                                res.sendStatus(200);
+                            })
+                            
+                        }else{
+                            // Login failed
+                            res.sendStatus(401)
+                        }
+                    })
+                }
+            })
         }else{
             // Login failed
             res.sendStatus(401)
@@ -79,6 +94,61 @@ function login(req, res, pool){
 
 function signup(req, res, pool){
     
+    console.log(req.body)
+
+    var username = req.body.username
+    var password = req.body.password
+    var dob = req.body.dob
+    
+    console.log(username + ":" + password + ":" + dob)
+    
+    pool.query('SELECT COUNT(*) AS matches FROM Users WHERE username=?',[username],function(err, results, fields){
+        if (err){
+            res.sendStatus(500)
+        }else{
+            var matchCount = results[0].matches
+            if (matchCount > 0){
+                // Can't have duplicate usernames
+                res.sendStatus(403)
+            }else{
+                console.log("Username Success")
+                // Username is good, so next we try and validate the given date
+                pool.query('SELECT DATE(?) AS result',[dob],function(err,results,fields){
+                    console.log(results)
+                    if (err){
+                        res.sendStatus(500)
+                    }else{
+                        var isDate = results[0].result != null
+                        if (!isDate){
+                            // Can't use invalid date
+                            res.sendStatus(401)
+                        }else{
+                            console.log("Date Success")
+                            // Should be good to add it
+                            // Need to hash password
+                            bcrypt.hash(password,14,function(err, hash){
+                                if (err){
+                                    res.sendStatus(500)
+                                }else{
+                                    console.log("Hash Success")
+                                    // Finally we can insert a new user
+                                    pool.query('INSERT INTO Users (username,password,birthDate) VALUES (?,?,?)',[username,hash,dob],function(err,results,fields){
+                                        if (err){
+                                            res.sendStatus(500)
+                                        }else{
+                                            console.log("Insert Success")
+                                            res.status(200).send(JSON.stringify({}))
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    }
+                })
+                
+            }
+        }
+    })
 }
 
 module.exports = {

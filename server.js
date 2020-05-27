@@ -21,6 +21,7 @@ app.set('view engine', 'handlebars')
 app.locals.layout = 'main'
 
 app.use(cookieParser())
+app.use(express.json())
 app.use(express.static("public"))
 
 app.use(function(req,res,next) {
