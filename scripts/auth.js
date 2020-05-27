@@ -14,7 +14,6 @@ function validateSession(req, res, pool, callback){
         var testUsername = req.cookies.username
         var testToken = req.cookies.token
         
-        console.log("UserID:" + testUserID + "; Username:" + testUsername + "; Token: " + testToken)
         pool.query('DELETE FROM LoginTokens WHERE expiryDateTime < NOW();',function(error, results, fields){
             pool.query('SELECT COUNT(*) AS matches FROM LoginTokens WHERE userID = ? AND token = ?;',[testUserID, testToken],function(error, results, fields){
                 var matchCount = results[0].matches
@@ -35,20 +34,16 @@ function validateSession(req, res, pool, callback){
     
     }else{
         // There isn't any session data to check
-        console.log("No session to validate")
         callback()
     }
     
 }
 
 function login(req, res, pool){
-    console.log(req.headers.authorization)
     
     var unencodedString = Buffer.from(req.headers.authorization.split(" ")[1],'base64').toString('ascii')
-    console.log("AUTH String: " + unencodedString)
     var sentUsername = unencodedString.split(':')[0]
     var sentPassword = unencodedString.split(':')[1]
-    console.log("UNAME: " + sentUsername + "\nPASSWD: " + sentPassword)
     
     // TODO Obviously make this a real check
     pool.query('SELECT userID FROM Users WHERE username = ?', [sentUsername], function(err, results, fields){
@@ -93,15 +88,11 @@ function login(req, res, pool){
 }
 
 function signup(req, res, pool){
-    
-    console.log(req.body)
 
     var username = req.body.username
     var password = req.body.password
     var dob = req.body.dob
-    
-    console.log(username + ":" + password + ":" + dob)
-    
+
     pool.query('SELECT COUNT(*) AS matches FROM Users WHERE username=?',[username],function(err, results, fields){
         if (err){
             res.sendStatus(500)
@@ -111,10 +102,8 @@ function signup(req, res, pool){
                 // Can't have duplicate usernames
                 res.sendStatus(403)
             }else{
-                console.log("Username Success")
                 // Username is good, so next we try and validate the given date
                 pool.query('SELECT DATE(?) AS result',[dob],function(err,results,fields){
-                    console.log(results)
                     if (err){
                         res.sendStatus(500)
                     }else{
@@ -130,13 +119,11 @@ function signup(req, res, pool){
                                 if (err){
                                     res.sendStatus(500)
                                 }else{
-                                    console.log("Hash Success")
                                     // Finally we can insert a new user
                                     pool.query('INSERT INTO Users (username,password,birthDate) VALUES (?,?,?)',[username,hash,dob],function(err,results,fields){
                                         if (err){
                                             res.sendStatus(500)
                                         }else{
-                                            console.log("Insert Success")
                                             res.status(200).send(JSON.stringify({}))
                                         }
                                     })
@@ -151,8 +138,27 @@ function signup(req, res, pool){
     })
 }
 
+function logout(req, res, pool){
+    if (res.locals.userID != -1){
+        var userID = res.locals.userID
+        var token = req.cookies.token
+        
+        res.clearCookie('userID')
+        res.clearCookie('username')
+        res.clearCookie('token')
+        
+        pool.query('DELETE FROM LoginTokens WHERE userID=? AND token=?',[userID, token], function(err,results,fields){
+            // It doesn't actually matter what this query returns; failure here does not matter
+            res.sendStatus(200)
+        })
+    }else{
+        res.sendStatus(401)
+    }
+}
+
 module.exports = {
     validateSession: validateSession,
     login: login,
-    signup: signup
+    signup: signup,
+    logout: logout
 }

@@ -63,4 +63,12 @@ app.post('/api/signup', function(req,res){
     auth.signup(req,res,pool)
 })
 
+app.post('/api/logout', function(req,res){
+    auth.logout(req,res,pool)
+})
+
+app.post('/api/newmessage', function(req,res){
+    
+})
+
 app.listen(port, function(){})

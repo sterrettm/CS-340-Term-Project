@@ -39,9 +39,15 @@ function callLogout(success, err){
         type: "POST",
         url: "/api/logout",
         success: function(){
+            Cookies.remove('userID')
+            Cookies.remove('username')
+            Cookies.remove('token')
             success();
         },
         error: function(xhr, error){
+            Cookies.remove('userID')
+            Cookies.remove('username')
+            Cookies.remove('token')
             err()
         }
     })
