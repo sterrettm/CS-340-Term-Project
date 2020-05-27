@@ -2,6 +2,7 @@ const fs = require('fs')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const auth = require('./scripts/auth')
+const handlers = require('./scripts/handlers')
 
 var handlebarsExpress = require('express-handlebars')
 
@@ -25,17 +26,8 @@ app.use(express.json())
 app.use(express.static("public"))
 
 app.use(function(req,res,next) {
-    // TEST CODE FROM STACKEXCHANGE
-    pool.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-        // should actually use an error-first callback to propagate the error, but anyway...
-        if (error) return console.error(error);
-        console.log('The solution is: ', results[0].solution);
-    });
-    // END STACKEXCHANGE TEST CODE
     console.log(req.authorization)
     auth.validateSession(req,res,pool,function(){
-        console.log("ID   : " + res.locals.userID)
-        console.log("UNAME: " + res.locals.username)
         next()
     })
 })
@@ -45,8 +37,17 @@ app.use(function(req,res,next) {
 app.get('/login', function (req,res){
     res.status(200).render("login", {})
 })
+
 app.get('/signup', function (req,res){
     res.status(200).render("signup", {})
+})
+
+app.get('/friends', function (req,res){
+    handlers.friendsHandler(req,res,pool)
+})
+
+app.get('/messages/:otherUname', function(req,res){
+    handlers.messagesHandler(req,res,req.params.otherUname,pool)
 })
 
 app.get('/', function(req,res){
