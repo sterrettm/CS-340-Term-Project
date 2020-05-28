@@ -33,6 +33,7 @@ function messages(req,res,otherUname,pool){
                             messages.push({})
                             messages[i].message = results[0][i].message
                             messages[i].side = {sent: "left", recv: "right"}[results[0][i].sentOrRecv]
+                            messages[i].otherSide = {sent: "right", recv: "left"}[results[0][i].sentOrRecv]
                         }
                         res.status(200).render("messages",{messages: messages, otherUname: otherUname})
                     }

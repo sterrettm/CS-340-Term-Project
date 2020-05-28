@@ -90,6 +90,13 @@
 }
 
 .userMessage {
+    display: inline-block;
     width: 150px;
     word-wrap: break-word;
+}
+
+.messageCore{
+    padding: 5px;
+    color: black;
+    background-color: rgb(210,240,255);
 }
