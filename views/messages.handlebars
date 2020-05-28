@@ -1,0 +1,10 @@
+<main>
+    <div class="mainbody">
+        <div class="formBox">
+            <div><b>People you have previously messaged</b></div><br>
+            {{#each this.users}}
+            <div><a style="text-align: left;" href="/messages/{{this.username}}">{{this.username}}</a></div>
+            {{/each}}
+        </div>
+    </div>
+</main>

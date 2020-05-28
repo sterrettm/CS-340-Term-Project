@@ -26,7 +26,6 @@ app.use(express.json())
 app.use(express.static("public"))
 
 app.use(function(req,res,next) {
-    console.log(req.authorization)
     auth.validateSession(req,res,pool,function(){
         next()
     })

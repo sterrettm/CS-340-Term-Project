@@ -43,7 +43,7 @@ function userMessages(req,res,otherUname,pool){
     }
 }
 
-function messages(res,req,pool){
+function messages(req,res,pool){
     if (res.locals.userID == -1){
         res.redirect('../login')
     }else{
@@ -51,8 +51,7 @@ function messages(res,req,pool){
             if (err){
                 res.sendStatus(500)
             }else{
-                console.log(results)
-                res.status(200).render("messages",{users: results})
+                res.status(200).render("messages",{users: results[0]})
             }
         })
     }
