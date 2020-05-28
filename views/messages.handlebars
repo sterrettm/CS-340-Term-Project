@@ -1,0 +1,11 @@
+<main>
+    <div class="mainbody">
+        <div class="formBox">
+            <div><b>Messages with {{this.otherUname}}</b></div><br>
+            {{#each this.messages}}
+            <div class="userMessage" style="width: 100%; text-align: {{this.side}};">{{this.message}}</div>
+            {{/each}}
+            <button class="boxButton" style="width:25%" id="view" onclick=""><a href='messages.html'>Back</a></button>
+        </div>
+    </div>
+</main>
