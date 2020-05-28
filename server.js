@@ -72,7 +72,7 @@ app.post('/api/logout', function(req,res){
 })
 
 app.post('/api/newmessage', function(req,res){
-    
+    handlers.newMessageHandler(req,res,pool)
 })
 
 app.listen(port, function(){})

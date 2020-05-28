@@ -17,7 +17,6 @@ function callLogin(username, password, success, err){
 function callSignup(username, password, dob, success, err){
     
     var bodyObject = {username: username, password: password, dob: dob}
-    console.log(bodyObject)
     
     $.ajax({
         type: "POST",

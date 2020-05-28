@@ -57,8 +57,42 @@ function messages(req,res,pool){
     }
 }
 
+function newMessage(req,res,pool){
+    if (res.locals.userID == -1){
+        res.redirect('../login')
+    }else{
+        var otherUname = req.body.username
+        var message = req.body.message
+        if (message.length > 0){
+            // First we need to get the userID of the user with that username
+            pool.query('SELECT userID FROM Users WHERE username=?',[otherUname],function(err,results,fields){
+                if (err){
+                    res.sendStatus(500)
+                }else if (results.length != 1){
+                    res.sendStatus(400)
+                }else{
+                    var userID = res.locals.userID
+                    var otherUserID = results[0].userID
+                    
+                    pool.query('INSERT INTO PrivateMessages (sendUserID, recvUserID, message, sentAt) VALUES (?,?,?,CURDATE())',
+                    [userID, otherUserID,message],function(err,results,fields){
+                        if (err){
+                            res.sendStatus(500)
+                        }else{
+                            res.status(200).send(JSON.stringify({}))
+                        }
+                    })
+                }
+            })
+        }else{
+            res.sendStatus(400)
+        }
+    }
+}
+
 module.exports = {
     friendsHandler: friends,
     userMessagesHandler: userMessages,
-    messagesHandler: messages
+    messagesHandler: messages,
+    newMessageHandler: newMessage
 }

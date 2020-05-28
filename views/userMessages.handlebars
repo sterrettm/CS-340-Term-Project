@@ -1,3 +1,13 @@
+<script>
+
+var otherUname = "{{this.otherUname}}"
+
+function postMessage(){
+    var message = document.getElementById("message").value
+    newMessage(otherUname, message, function(){alert("Success")}, function(){alert("Failure")})
+}
+
+</script>
 <main>
     <div class="mainbody">
         <div class="formBox">
@@ -6,6 +16,9 @@
             <div class="userMessage" style="width:100%"><p class="messageCore" style="margin-{{this.otherSide}}:30%; max-width: 60%; float: {{this.side}}; text-align: {{this.side}};">{{this.message}}</p></div>
             {{/each}}
             <button class="boxButton" style="width:25%" id="view" onclick=""><a href='/messages'>Back</a></button>
+            <div><b>Post New Message</b></div><br>
+            <input id="message"></input>
+            <button onclick="postMessage()">Post new message</button>
         </div>
     </div>
 </main>
