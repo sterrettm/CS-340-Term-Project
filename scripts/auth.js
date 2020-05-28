@@ -15,21 +15,29 @@ function validateSession(req, res, pool, callback){
         var testToken = req.cookies.token
         
         pool.query('DELETE FROM LoginTokens WHERE expiryDateTime < NOW();',function(error, results, fields){
-            pool.query('SELECT COUNT(*) AS matches FROM LoginTokens WHERE userID = ? AND token = ?;',[testUserID, testToken],function(error, results, fields){
-                var matchCount = results[0].matches
-                
-                if (matchCount > 0){
-                    // The user is logged in correctly
-                    res.locals.userID = testUserID
-                    res.locals.username = testUsername
-                    
-                    callback()
-                }else{
-                    // The user is not logged in correctly
-                    // TODO should probably log the user out somehow in case of non-malicious errors like a token expiring
-                    callback()
-                }
-            }) 
+            if (err){
+                res.sendStatus(500)
+            }else{
+                pool.query('SELECT COUNT(*) AS matches FROM LoginTokens WHERE userID = ? AND token = ?;',[testUserID, testToken],function(error, results, fields){
+                    if (err){
+                        res.sendStatus(500)
+                    }else{
+                        var matchCount = results[0].matches
+                        
+                        if (matchCount > 0){
+                            // The user is logged in correctly
+                            res.locals.userID = testUserID
+                            res.locals.username = testUsername
+                            
+                            callback()
+                        }else{
+                            // The user is not logged in correctly
+                            // TODO should probably log the user out somehow in case of non-malicious errors like a token expiring
+                            callback()
+                        }
+                    }
+                })
+            }
         })
     
     }else{
