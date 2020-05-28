@@ -47,7 +47,11 @@ app.get('/friends', function (req,res){
 })
 
 app.get('/messages/:otherUname', function(req,res){
-    handlers.messagesHandler(req,res,req.params.otherUname,pool)
+    handlers.userMessagesHandler(req,res,req.params.otherUname,pool)
+})
+
+app.get('/messages', function(req,res){
+    handlers.messagesHandler(req,res,pool)
 })
 
 app.get('/', function(req,res){

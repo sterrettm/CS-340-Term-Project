@@ -59,7 +59,8 @@ BEGIN
     SELECT DISTINCT user.userID, user.username FROM PrivateMessages as message
     JOIN Users AS user ON 
     ((message.sendUserID = currUserID AND user.userID = message.recvUserID) ||
-    ( message.recvUserID = currUserID AND user.userID = message.sendUserID));
+    ( message.recvUserID = currUserID AND user.userID = message.sendUserID))
+    ORDER BY message.sentAt;
 END $$
 
 DELIMITER ;

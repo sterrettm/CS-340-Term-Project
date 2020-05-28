@@ -12,7 +12,7 @@ function friends(req,res,pool){
         })
     }
 }
-function messages(req,res,otherUname,pool){
+function userMessages(req,res,otherUname,pool){
     if (res.locals.userID == -1){
         res.redirect('../login')
     }else{
@@ -35,7 +35,7 @@ function messages(req,res,otherUname,pool){
                             messages[i].side = {sent: "left", recv: "right"}[results[0][i].sentOrRecv]
                             messages[i].otherSide = {sent: "right", recv: "left"}[results[0][i].sentOrRecv]
                         }
-                        res.status(200).render("messages",{messages: messages, otherUname: otherUname})
+                        res.status(200).render("userMessages",{messages: messages, otherUname: otherUname})
                     }
                 })
             }
@@ -43,7 +43,23 @@ function messages(req,res,otherUname,pool){
     }
 }
 
+function messages(res,req,pool){
+    if (res.locals.userID == -1){
+        res.redirect('../login')
+    }else{
+        pool.query('CALL getMessagedPeople(?);',[res.locals.userID],function(err,results,fields){
+            if (err){
+                res.sendStatus(500)
+            }else{
+                console.log(results)
+                res.status(200).render("messages",{users: results})
+            }
+        })
+    }
+}
+
 module.exports = {
     friendsHandler: friends,
+    userMessagesHandler: userMessages,
     messagesHandler: messages
 }
