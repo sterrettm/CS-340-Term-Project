@@ -27,12 +27,27 @@
                 </a>
             </div>
             <div class="navbarflexright">
-                <a class="createaccountbutton navbarbutton" href='/signup'>
+            {{#ifEqual this.locals.userID -1}}
+                <a class="navbarbutton" href='/signup'>
                 Create Account
                 </a>
-                <a class="loginbutton navbarbutton" href='/login'>
+                <a class="navbarbutton" href='/login'>
                 Login
                 </a>
+            
+            {{else}}
+                <a class="navbarbutton" href='/user/{{this.locals.username}}'>
+                {{this.locals.username}}
+                </a>
+                <script>
+                function tryLogout(){
+                    callLogout(function(){window.location.href = '/'},function(){})
+                }
+                </script>
+                <div class="navbarbutton" onclick='tryLogout()'>
+                Logout
+                </div>
+            {{/ifEqual}}
             </div>
         </div>
     </nav>

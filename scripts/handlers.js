@@ -7,7 +7,7 @@ function friends(req,res,pool){
             if (err){
                 res.sendStatus(500)
             }else{
-                res.status(200).render("friends",{friends: results[0]})
+                res.status(200).render("friends",{friends: results[0], locals: res.locals})
             }
         })
     }
@@ -35,7 +35,7 @@ function userMessages(req,res,otherUname,pool){
                             messages[i].side = {sent: "left", recv: "right"}[results[0][i].sentOrRecv]
                             messages[i].otherSide = {sent: "right", recv: "left"}[results[0][i].sentOrRecv]
                         }
-                        res.status(200).render("userMessages",{messages: messages, otherUname: otherUname})
+                        res.status(200).render("userMessages",{messages: messages, otherUname: otherUname, locals: res.locals})
                     }
                 })
             }
@@ -51,7 +51,7 @@ function messages(req,res,pool){
             if (err){
                 res.sendStatus(500)
             }else{
-                res.status(200).render("messages",{users: results[0]})
+                res.status(200).render("messages",{users: results[0], locals: res.locals})
             }
         })
     }

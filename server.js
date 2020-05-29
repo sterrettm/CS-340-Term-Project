@@ -3,11 +3,12 @@ const express = require('express')
 const cookieParser = require('cookie-parser')
 const auth = require('./scripts/auth')
 const handlers = require('./scripts/handlers')
+const helpers = require('./scripts/helpers')
 
 var handlebarsExpress = require('express-handlebars')
 
 var handlebarsEngine = handlebarsExpress.create({
-	helpers: {}
+	helpers: helpers
 })
 
 const mysqlParams = require("./shadow/mysql.json")
@@ -34,11 +35,11 @@ app.use(function(req,res,next) {
 // GET Requests
 
 app.get('/login', function (req,res){
-    res.status(200).render("login", {})
+    res.status(200).render("login", {locals: res.locals})
 })
 
 app.get('/signup', function (req,res){
-    res.status(200).render("signup", {})
+    res.status(200).render("signup", {locals: res.locals})
 })
 
 app.get('/friends', function (req,res){
@@ -54,7 +55,7 @@ app.get('/messages', function(req,res){
 })
 
 app.get('/', function(req,res){
-    res.status(200).render("index", {})
+    res.status(200).render("index", {locals: res.locals})
 })
 
 // POST Requests

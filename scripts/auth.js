@@ -14,11 +14,11 @@ function validateSession(req, res, pool, callback){
         var testUsername = req.cookies.username
         var testToken = req.cookies.token
         
-        pool.query('DELETE FROM LoginTokens WHERE expiryDateTime < NOW();',function(error, results, fields){
+        pool.query('DELETE FROM LoginTokens WHERE expiryDateTime < NOW();',function(err, results, fields){
             if (err){
                 res.sendStatus(500)
             }else{
-                pool.query('SELECT COUNT(*) AS matches FROM LoginTokens WHERE userID = ? AND token = ?;',[testUserID, testToken],function(error, results, fields){
+                pool.query('SELECT COUNT(*) AS matches FROM LoginTokens WHERE userID = ? AND token = ?;',[testUserID, testToken],function(err, results, fields){
                     if (err){
                         res.sendStatus(500)
                     }else{

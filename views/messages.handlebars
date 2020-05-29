@@ -1,3 +1,11 @@
+<script>
+
+function jumpToUserMessages(){
+    var username = document.getElementById('username').value
+    window.location.href = '/messages/' + username
+}
+
+</script>
 <main>
     <div class="mainbody">
         <div class="formBox">
@@ -5,6 +13,9 @@
             {{#each this.users}}
             <div><a style="text-align: left;" href="/messages/{{this.username}}">{{this.username}}</a></div>
             {{/each}}
+            <div><b>Start a conversation with another user</b></div><br>
+            <input id="username"></input>
+            <button onclick="jumpToUserMessages()">Start conversation</button>
         </div>
     </div>
 </main>
