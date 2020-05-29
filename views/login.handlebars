@@ -2,7 +2,11 @@
 function tryLogin(){
     var username = document.getElementById("username").value 
     var password = document.getElementById("password").value
-    callLogin(username, password, function(){alert("Success")}, function(){alert("Failure")})
+    callLogin(username, password, function(){
+        window.location.href = '/'
+    }, function(){
+        alert("Username or password is incorrect")
+    })
 }
 </script>
 <main>

@@ -74,7 +74,7 @@ function newMessage(req,res,pool){
                     var userID = res.locals.userID
                     var otherUserID = results[0].userID
                     
-                    pool.query('INSERT INTO PrivateMessages (sendUserID, recvUserID, message, sentAt) VALUES (?,?,?,CURDATE())',
+                    pool.query('INSERT INTO PrivateMessages (sendUserID, recvUserID, message, sentAt) VALUES (?,?,?,NOW())',
                     [userID, otherUserID,message],function(err,results,fields){
                         if (err){
                             res.sendStatus(500)

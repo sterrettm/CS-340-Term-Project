@@ -4,7 +4,7 @@ var otherUname = "{{this.otherUname}}"
 
 function postMessage(){
     var message = document.getElementById("message").value
-    newMessage(otherUname, message, function(){alert("Success")}, function(){alert("Failure")})
+    newMessage(otherUname, message, function(){location.reload()}, function(){alert("Failed to post message")})
 }
 
 </script>
