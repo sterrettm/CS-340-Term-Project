@@ -32,7 +32,11 @@ function validateSession(req, res, pool, callback){
                             callback()
                         }else{
                             // The user is not logged in correctly
-                            // TODO should probably log the user out somehow in case of non-malicious errors like a token expiring
+                            
+                            res.clearCookie('userID')
+                            res.clearCookie('username')
+                            res.clearCookie('token')
+                            
                             callback()
                         }
                     }
