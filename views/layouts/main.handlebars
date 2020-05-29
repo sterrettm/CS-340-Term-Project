@@ -51,6 +51,18 @@
             </div>
         </div>
     </nav>
+    
+    {{#if this.locals.cookies.notification}}
+    <div class="notificationModal" id="notificationModal">
+    <div style='font-weight:500;'>Notification</div><br>
+    <div>
+    {{this.locals.cookies.notification}}
+    </div><br>
+    <button class="boxButton" onclick="document.getElementById('notificationModal').outerHTML=''">
+    Close
+    </button>
+    </div>
+    {{/if}}
 
     {{{body}}}
     

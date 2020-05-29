@@ -1,3 +1,5 @@
+const utils = require('./utils')
+
 function friends(req,res,pool){
     if (res.locals.userID == -1){
         res.redirect('/login')
@@ -5,7 +7,7 @@ function friends(req,res,pool){
         // Now we need the list of all friends
         pool.query('CALL getFriends(?);',[res.locals.userID],function(err,results,fields){
             if (err){
-                res.sendStatus(500)
+                utils.redirectWithNote(res,"/messages","An internal server error occured.")
             }else{
                 res.status(200).render("friends",{friends: results[0], locals: res.locals})
             }
@@ -18,15 +20,15 @@ function userMessages(req,res,otherUname,pool){
     }else{
         pool.query('SELECT userID FROM Users WHERE username=?',[otherUname],function(err,results,fields){
             if (err){
-                res.sendStatus(500)
+                utils.redirectWithNote(res,"/messages","An internal server error occured.")
             }else if (results.length != 1){
-                res.sendStatus(400)
+                utils.redirectWithNote(res,"/messages","There is no user with username " + otherUname + ".")
             }else{
                 var userID = res.locals.userID
                 var otherUserID = results[0].userID
                 pool.query('CALL getMessages(?,?);',[userID,otherUserID],function(err,results,fields){
                     if (err){
-                        res.sendStatus(500)
+                        utils.redirectWithNote(res,"/messages","An internal server error occured.")
                     }else{
                         var messages = []
                         for (var i = 0; i < results[0].length; i++){
@@ -49,7 +51,7 @@ function messages(req,res,pool){
     }else{
         pool.query('CALL getMessagedPeople(?);',[res.locals.userID],function(err,results,fields){
             if (err){
-                res.sendStatus(500)
+                utils.redirectWithNote(res,"/messages","An internal server error occured.")
             }else{
                 res.status(200).render("messages",{users: results[0], locals: res.locals})
             }

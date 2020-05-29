@@ -26,7 +26,18 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.static("public"))
 
-app.use(function(req,res,next) {
+app.use(function(req,res,next){
+    res.locals.query = req.query
+    res.locals.cookies = req.cookies
+
+    // Special code to support notifications
+    if ('notification' in req.cookies){
+        res.clearCookie('notification')
+    }
+
+    next()
+})
+app.use(function(req,res,next){
     auth.validateSession(req,res,pool,function(){
         next()
     })

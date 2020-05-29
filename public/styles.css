@@ -102,3 +102,16 @@
     margin-top: 3px;
     margin-bottom: 3px;
 }
+
+.notificationModal{
+    position: fixed;
+    padding: 5px;
+    color: black;
+    background-color: rgb(210,240,255);
+    margin-top: 3px;
+    margin-bottom: 3px;
+    z-index: 99; 
+    left: 40%;
+    width: 20%;
+    top: 30px;
+}

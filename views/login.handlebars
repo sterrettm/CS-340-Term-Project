@@ -5,7 +5,8 @@ function tryLogin(){
     callLogin(username, password, function(){
         window.location.href = '/'
     }, function(){
-        alert("Username or password is incorrect")
+        setNextNotification("Username or password is incorrect")
+        location.reload()
     })
 }
 </script>

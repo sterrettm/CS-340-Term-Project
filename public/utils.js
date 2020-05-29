@@ -16,3 +16,7 @@ function newMessage(otherUsername, message, success, err){
         }
     })
 }
+
+function setNextNotification(msg){
+    Cookies.set('notification',msg)
+}
