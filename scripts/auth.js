@@ -1,5 +1,5 @@
 const crypto = require('crypto')
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 
 function validateSession(req, res, pool, callback){
     // First, set default values for userID and username
