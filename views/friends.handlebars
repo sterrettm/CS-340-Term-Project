@@ -3,7 +3,7 @@
         <div class="formBox">
             <div><b>Friends List</b></div><br>
             {{#each this.friends}}
-            <div><p style="text-align: left;">{{this.username}}</p></div>
+            <div><a style="text-align: left;" href="/user/{{this.username}}">{{this.username}}</a></div>
             {{/each}}
         </div>
     </div>

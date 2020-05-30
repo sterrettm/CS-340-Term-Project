@@ -92,9 +92,78 @@ function newMessage(req,res,pool){
     }
 }
 
+function otherUserPage(req,res,otherUname,pool){
+    if (res.locals.userID == -1){
+        res.redirect('/login')
+    }else{
+        if (otherUname == res.locals.username){
+            userPage(req,res,pool)
+        }else{
+            pool.query('SELECT userID FROM Users WHERE username=?',[otherUname],function(err,results,fields){
+                if (err){
+                    res.sendStatus(500)
+                }else if (results.length != 1){
+                    res.sendStatus(400)
+                }else{
+                    var otherUserID = results[0].userID
+                    pool.query('SELECT * FROM UserInterests WHERE userID=?',[otherUserID],function(err,results,fields){
+                        if (err){
+                            utils.redirectWithNote(res,"/user","An internal server error occured.")
+                        }else{
+                            res.status(200).render("otherUser",{interests: results, otherUsername: otherUname, locals: res.locals})
+                        }
+                    })
+                }
+            })
+        }
+    }
+}
+
+function userPage(req,res,pool){
+    if (res.locals.userID == -1){
+        res.redirect('/login')
+    }else{
+        pool.query('SELECT * FROM UserInterests WHERE userID=?',[res.locals.userID],function(err,results,fields){
+            if (err){
+                utils.redirectWithNote(res,"/user","An internal server error occured.")
+            }else{
+                res.status(200).render("user",{interests: results, locals: res.locals})
+            }
+        })
+    }
+}
+
+function newInterest(req,res,pool){
+    console.log("Yes")
+    if (res.locals.userID == -1){
+        res.redirect('../login')
+    }else{
+        var interest = req.body.interest
+        if (interest.length > 0){
+            var userID = res.locals.userID
+            
+            pool.query('INSERT INTO UserInterests (userID, interest) VALUES (?,?)',
+            [userID, interest],function(err,results,fields){
+                if (err){
+                    console.log("1")
+                    res.sendStatus(500)
+                }else{
+                    res.status(200).send(JSON.stringify({}))
+                }
+            })
+        }else{
+            console.log("2")
+            res.sendStatus(400)
+        }
+    }
+}
+
 module.exports = {
     friendsHandler: friends,
     userMessagesHandler: userMessages,
     messagesHandler: messages,
-    newMessageHandler: newMessage
+    userPageHandler: userPage,
+    otherUserPageHandler: otherUserPage,
+    newMessageHandler: newMessage,
+    newInterestHandler: newInterest
 }

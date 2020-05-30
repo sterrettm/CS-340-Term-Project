@@ -1,0 +1,28 @@
+<script>
+
+function callAddNewInterest(){
+    var interestName = document.getElementById('interestName').value
+    addNewInterest(interestName, function(){
+        location.reload()
+    }, function(){
+        setNextNotification("Failed to add interest")
+        location.reload()
+    })
+}
+
+</script>
+<main>
+    <div class="mainbody">
+        <div class="formBox">
+            <div>Welcome user {{this.locals.username}}</div><br>
+            <div>Currently listed interests:</div>
+            <div>
+            {{#each this.interests}}
+            <p>{{this.interest}}</p>
+            {{/each}}
+            </div><br>
+            <input id="interestName"></input>
+            <button onclick="callAddNewInterest()">Add new interest</button>
+        </div>
+    </div>
+</main>

@@ -65,6 +65,14 @@ app.get('/messages', function(req,res){
     handlers.messagesHandler(req,res,pool)
 })
 
+app.get('/user', function(req,res){
+    handlers.userPageHandler(req,res,pool)
+})
+
+app.get('/user/:otherUname',function(req,res){
+    handlers.otherUserPageHandler(req,res,req.params.otherUname,pool)
+})
+
 app.get('/', function(req,res){
     res.status(200).render("index", {locals: res.locals})
 })
@@ -85,6 +93,10 @@ app.post('/api/logout', function(req,res){
 
 app.post('/api/newmessage', function(req,res){
     handlers.newMessageHandler(req,res,pool)
+})
+
+app.post('/api/newinterest', function(req,res){
+    handlers.newInterestHandler(req,res,pool)
 })
 
 app.listen(port, function(){})

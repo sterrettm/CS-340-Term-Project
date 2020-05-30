@@ -1,0 +1,13 @@
+<main>
+    <div class="mainbody">
+        <div class="formBox">
+            <div>Interests of {{this.otherUsername}}</div><br>
+            <div>Currently listed interests:</div>
+            <div>
+            {{#each this.interests}}
+            <p>{{this.interest}}</p>
+            {{/each}}
+            </div><br>
+        </div>
+    </div>
+</main>

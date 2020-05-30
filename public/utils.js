@@ -17,6 +17,25 @@ function newMessage(otherUsername, message, success, err){
     })
 }
 
+function addNewInterest(interestName, success, err){
+    
+    var bodyObject = {interest: interestName}
+    
+    $.ajax({
+        type: "POST",
+        url: "/api/newinterest",
+        data: JSON.stringify(bodyObject),
+        dataType: "json",
+        contentType:"application/json; charset=utf-8",
+        success: function(){
+            success();
+        },
+        error: function(xhr, error){
+            err()
+        }
+    })
+}
+
 function setNextNotification(msg){
     Cookies.set('notification',msg)
 }
