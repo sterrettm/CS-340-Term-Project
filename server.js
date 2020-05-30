@@ -16,7 +16,7 @@ const mysql = require('mysql')
 var pool = mysql.createConnection(mysqlParams)
 
 const app = express()
-const port = 3000
+const port = 48766
 
 app.engine('handlebars', handlebarsEngine.engine)
 app.set('view engine', 'handlebars')
