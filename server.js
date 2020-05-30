@@ -73,6 +73,10 @@ app.get('/user/:otherUname',function(req,res){
     handlers.otherUserPageHandler(req,res,req.params.otherUname,pool)
 })
 
+app.get('/search', function(req,res){
+    handlers.userSearchHandler(req,res,pool);
+})
+
 app.get('/', function(req,res){
     res.status(200).render("index", {locals: res.locals})
 })
@@ -97,6 +101,10 @@ app.post('/api/newmessage', function(req,res){
 
 app.post('/api/newinterest', function(req,res){
     handlers.newInterestHandler(req,res,pool)
+})
+
+app.post('/api/newfriend', function(req,res){
+    handlers.newFriendHandler(req,res,pool)
 })
 
 app.listen(port, function(){})

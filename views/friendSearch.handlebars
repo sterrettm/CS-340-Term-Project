@@ -1,0 +1,25 @@
+<script>
+
+function updateFriendSearch(){
+    var interestName = document.getElementById('interestName').value
+    window.location.href = '/search/?interest='+encodeURI(interestName)
+}
+
+</script>
+<main>
+    <div class="mainbody">
+        <div class="formBox">
+            <div>User Search Page</div><br>
+            <div>Currently search results interests:</div>
+            <div>
+            {{#each this.results}}
+            <a href='/user/{{this.username}}'>{{this.username}}</a>
+            <br>
+            {{/each}}
+            </div><br>
+            <div>Search by interest</div>
+            <input id="interestName"></input>
+            <button onclick="updateFriendSearch()">Search by interest</button>
+        </div>
+    </div>
+</main>

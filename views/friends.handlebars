@@ -1,3 +1,16 @@
+<script>
+
+function callAddNewFriend(){
+    var newFriendName = document.getElementById('friendUsername').value
+    addNewFriend(newFriendName, function(){
+        location.reload()
+    }, function(){
+        setNextNotification("Failed to add friend")
+        location.reload()
+    })
+}
+
+</script>
 <main>
     <div class="mainbody">
         <div class="formBox">
@@ -5,6 +18,10 @@
             {{#each this.friends}}
             <div><a style="text-align: left;" href="/user/{{this.username}}">{{this.username}}</a></div>
             {{/each}}
+            <br>
+            <div>Add new friend by username</div>
+            <input id="friendUsername"></input>
+            <button onclick="callAddNewFriend()">Add new interest</button>
         </div>
     </div>
 </main>
