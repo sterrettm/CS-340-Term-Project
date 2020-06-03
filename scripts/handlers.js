@@ -134,7 +134,6 @@ function userPage(req,res,pool){
 }
 
 function newInterest(req,res,pool){
-    console.log("Yes")
     if (res.locals.userID == -1){
         res.redirect('../login')
     }else{
@@ -145,21 +144,41 @@ function newInterest(req,res,pool){
             pool.query('INSERT INTO UserInterests (userID, interest) VALUES (?,?)',
             [userID, interest],function(err,results,fields){
                 if (err){
-                    console.log("1")
                     res.sendStatus(500)
                 }else{
                     res.status(200).send(JSON.stringify({}))
                 }
             })
         }else{
-            console.log("2")
+            res.sendStatus(400)
+        }
+    }
+}
+
+function removeInterest(req,res,pool){
+    if (res.locals.userID == -1){
+        res.redirect('../login')
+    }else{
+        var interest = req.body.interest
+        if (interest.length > 0){
+            var userID = res.locals.userID
+            
+            pool.query('DELETE FROM UserInterests WHERE userID=? AND interest=?;',
+            [userID, interest],function(err,results,fields){
+                if (err){
+                    console.log(err)
+                    res.sendStatus(500)
+                }else{
+                    res.status(200).send(JSON.stringify({}))
+                }
+            })
+        }else{
             res.sendStatus(400)
         }
     }
 }
 
 function newFriend(req,res,pool){
-    console.log("Yes")
     if (res.locals.userID == -1){
         res.redirect('../login')
     }else{
@@ -177,7 +196,6 @@ function newFriend(req,res,pool){
                     pool.query('INSERT INTO Friends (userID1, userID2) VALUES (?,?)',
                     [userID, friendID],function(err,results,fields){
                         if (err){
-                            console.log("1")
                             res.sendStatus(500)
                         }else{
                             res.status(200).send(JSON.stringify({}))
@@ -186,14 +204,12 @@ function newFriend(req,res,pool){
                 }
             })
         }else{
-            console.log("2")
             res.sendStatus(400)
         }
     }
 }
 
 function removeFriend(req,res,pool){
-    console.log("Yes")
     if (res.locals.userID == -1){
         res.redirect('../login')
     }else{
@@ -211,7 +227,6 @@ function removeFriend(req,res,pool){
                     pool.query('DELETE FROM Friends WHERE (userID1=? AND userID2=?) OR (userID2=? AND userID1=?)',
                     [userID, friendID, userID, friendID],function(err,results,fields){
                         if (err){
-                            console.log("1")
                             res.sendStatus(500)
                         }else{
                             res.status(200).send(JSON.stringify({}))
@@ -220,14 +235,12 @@ function removeFriend(req,res,pool){
                 }
             })
         }else{
-            console.log("2")
             res.sendStatus(400)
         }
     }
 }
 
 function userSearch(req,res,pool){
-    console.log("Yes")
     if (res.locals.userID == -1){
         res.redirect('../login')
     }else{
@@ -260,5 +273,6 @@ module.exports = {
     newInterestHandler: newInterest,
     newFriendHandler: newFriend,
     userSearchHandler: userSearch,
-    removeFriendHandler: removeFriend
+    removeFriendHandler: removeFriend,
+    removeInterestHandler: removeInterest
 }

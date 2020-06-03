@@ -36,6 +36,25 @@ function addNewInterest(interestName, success, err){
     })
 }
 
+function removeInterest(interestName, success, err){
+    
+    var bodyObject = {interest: interestName}
+    
+    $.ajax({
+        type: "POST",
+        url: "/api/removeinterest",
+        data: JSON.stringify(bodyObject),
+        dataType: "json",
+        contentType:"application/json; charset=utf-8",
+        success: function(){
+            success();
+        },
+        error: function(xhr, error){
+            err()
+        }
+    })
+}
+
 function addNewFriend(friendName, success, err){
     
     var bodyObject = {friendName: friendName}

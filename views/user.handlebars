@@ -10,18 +10,31 @@ function callAddNewInterest(){
     })
 }
 
+function callRemoveInterest(interestName){
+    removeInterest(interestName, function(){
+        location.reload()
+    }, function(){
+        setNextNotification("Failed to remove interest")
+        location.reload()
+    })
+}
+
 </script>
 <main>
     <div class="mainbody">
         <div class="formBox">
-            <div>Welcome user {{this.locals.username}}</div><br>
-            <div>Currently listed interests:</div>
+            <div><b>Welcome user {{this.locals.username}}</b></div><br>
+            <div>Currently listed interests:</div><br>
             <div>
             {{#each this.interests}}
-            <p>{{this.interest}}</p>
+            <span style="float: left;">{{this.interest}}</span>
+            <a class="linkRed" style="float: right;" onclick="callRemoveInterest('{{this.interest}}')">Remove Interest</a>
+            <br>
             {{/each}}
-            </div><br>
-            <div>Add new interest</div>
+            </div>
+        </div><br>
+        <div class="formBox">
+            <div><b>Add new interest</b></div><br>
             <input id="interestName"></input>
             <button onclick="callAddNewInterest()">Add new interest</button>
         </div>

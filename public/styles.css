@@ -131,5 +131,11 @@
 .linkRed{
     font-weight: 400;
     text-decoration: underline;
-    color: rgb(232,20,0);;
+    color: black;
+}
+
+.linkRed:hover{
+    font-weight: 400;
+    text-decoration: underline;
+    color: rgb(232,20,0);
 }

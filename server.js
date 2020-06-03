@@ -103,6 +103,10 @@ app.post('/api/newinterest', function(req,res){
     handlers.newInterestHandler(req,res,pool)
 })
 
+app.post('/api/removeinterest',function(req,res){
+    handlers.removeInterestHandler(req,res,pool)
+})
+
 app.post('/api/newfriend', function(req,res){
     handlers.newFriendHandler(req,res,pool)
 })
