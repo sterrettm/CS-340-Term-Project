@@ -115,3 +115,21 @@
     width: 20%;
     top: 30px;
 }
+
+.linkBlue{
+    font-weight: 400;
+    text-decoration: none;
+    color: black;
+}
+
+.linkBlue:hover{
+    font-weight: 400;
+    text-decoration: underline;
+    color: rgb(0,162,232);
+}
+
+.linkRed{
+    font-weight: 400;
+    text-decoration: underline;
+    color: rgb(232,20,0);;
+}

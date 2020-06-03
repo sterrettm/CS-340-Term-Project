@@ -170,12 +170,46 @@ function newFriend(req,res,pool){
             pool.query('SELECT userID FROM Users WHERE username=?',[friendUname],function(err,results,fields){
                 if (err){
                     res.sendStatus(500)
-                }else if (results.length != 1){
+                }else if (results.length != 1 || results[0].userID == userID){
                     res.sendStatus(400)
                 }else{
                     var friendID = results[0].userID
                     pool.query('INSERT INTO Friends (userID1, userID2) VALUES (?,?)',
                     [userID, friendID],function(err,results,fields){
+                        if (err){
+                            console.log("1")
+                            res.sendStatus(500)
+                        }else{
+                            res.status(200).send(JSON.stringify({}))
+                        }
+                    })
+                }
+            })
+        }else{
+            console.log("2")
+            res.sendStatus(400)
+        }
+    }
+}
+
+function removeFriend(req,res,pool){
+    console.log("Yes")
+    if (res.locals.userID == -1){
+        res.redirect('../login')
+    }else{
+        var friendUname = req.body.friendName
+        if (friendUname.length > 0){
+            var userID = res.locals.userID
+            // First we need to get the userID of the user with that username
+            pool.query('SELECT userID FROM Users WHERE username=?',[friendUname],function(err,results,fields){
+                if (err){
+                    res.sendStatus(500)
+                }else if (results.length != 1){
+                    res.sendStatus(400)
+                }else{
+                    var friendID = results[0].userID
+                    pool.query('DELETE FROM Friends WHERE (userID1=? AND userID2=?) OR (userID2=? AND userID1=?)',
+                    [userID, friendID, userID, friendID],function(err,results,fields){
                         if (err){
                             console.log("1")
                             res.sendStatus(500)
@@ -225,5 +259,6 @@ module.exports = {
     newMessageHandler: newMessage,
     newInterestHandler: newInterest,
     newFriendHandler: newFriend,
-    userSearchHandler: userSearch
+    userSearchHandler: userSearch,
+    removeFriendHandler: removeFriend
 }

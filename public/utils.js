@@ -55,6 +55,25 @@ function addNewFriend(friendName, success, err){
     })
 }
 
+function removeFriend(friendName, success, err){
+    
+    var bodyObject = {friendName: friendName}
+    
+    $.ajax({
+        type: "POST",
+        url: "/api/removefriend",
+        data: JSON.stringify(bodyObject),
+        dataType: "json",
+        contentType:"application/json; charset=utf-8",
+        success: function(){
+            success();
+        },
+        error: function(xhr, error){
+            err()
+        }
+    })
+}
+
 function setNextNotification(msg){
     Cookies.set('notification',msg)
 }

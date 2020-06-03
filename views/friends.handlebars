@@ -10,16 +10,32 @@ function callAddNewFriend(){
     })
 }
 
+function callRemoveFriend(username){
+    alert("Removing " + username)
+    removeFriend(username, function(){
+        location.reload()
+    }, function(){
+        setNextNotification("Failed to remove friend")
+        location.reload()
+    })
+}
+
 </script>
 <main>
     <div class="mainbody">
         <div class="formBox">
-            <div><b>Friends List</b></div><br>
+            <div><b>Current Friends List</b></div><br><br>
             {{#each this.friends}}
-            <div><a style="text-align: left;" href="/user/{{this.username}}">{{this.username}}</a></div>
+            <div>
+                <a class="linkBlue" style="float: left;" href="/user/{{this.username}}">{{this.username}}</a>
+                <a class="linkRed" style="float: right;" onclick="callRemoveFriend('{{this.username}}')">Remove Friend</a>
+            </div><br><br>
             {{/each}}
             <br>
-            <div>Add new friend by username</div>
+        </div>
+        <br>
+        <div class="formBox">
+            <div><b>Add new friend by username</b></div><br>
             <input id="friendUsername"></input>
             <button onclick="callAddNewFriend()">Add new interest</button>
         </div>
