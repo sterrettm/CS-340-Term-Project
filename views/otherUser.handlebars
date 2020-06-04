@@ -1,11 +1,11 @@
 <main>
     <div class="mainbody">
         <div class="formBox">
-            <div>Interests of {{this.otherUsername}}</div><br>
-            <div>Currently listed interests:</div>
+            <div><b>Interests of {{this.otherUsername}}</b></div><br>
+            <div>Currently listed interests:</div><br>
             <div>
             {{#each this.interests}}
-            <p>{{this.interest}}</p>
+            <a class="linkBlue" href="/search/?interest={{encodeURI this.interest}}">{{this.interest}}</a><br>
             {{/each}}
             </div><br>
         </div>

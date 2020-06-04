@@ -9,16 +9,22 @@ function updateFriendSearch(){
 <main>
     <div class="mainbody">
         <div class="formBox">
-            <div>User Search Page</div><br>
-            <div>Currently search results interests:</div>
+            <div><b>User Search Page</b></div><br>
+            <div>Currently search results interests:</div><br>
             <div>
             {{#each this.results}}
-            <a href='/user/{{this.username}}'>{{this.username}}</a>
+            <a class="linkBlue" href='/user/{{this.username}}'>{{this.username}}</a><br>
             <br>
             {{/each}}
             </div><br>
-            <div>Search by interest</div>
-            <input id="interestName"></input>
+        </div><br>
+        <div class="formBox">
+            <div>Search by your interests</div><br>
+            <select name="interest" id="interestName">
+            {{#each this.interests}}
+                <option value="{{this.interest}}">{{this.interest}}</option>
+            {{/each}}
+            </select>
             <button onclick="updateFriendSearch()">Search by interest</button>
         </div>
     </div>

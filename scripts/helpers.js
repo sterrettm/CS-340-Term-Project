@@ -6,6 +6,11 @@ function ifEqual(left, right, options){
     }
 }
 
+function encodeURIHelper(value,options){
+    return encodeURI(value)
+}
+
 module.exports = {
-    ifEqual: ifEqual
+    ifEqual: ifEqual,
+    encodeURI: encodeURIHelper
 }

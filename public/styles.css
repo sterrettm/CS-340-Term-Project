@@ -118,7 +118,7 @@
 
 .linkBlue{
     font-weight: 400;
-    text-decoration: none;
+    text-decoration: underline;
     color: black;
 }
 

@@ -73,6 +73,10 @@ app.get('/user/:otherUname',function(req,res){
     handlers.otherUserPageHandler(req,res,req.params.otherUname,pool)
 })
 
+app.get('/newinterest',function(req,res){
+    handlers.newInterestPageHandler(req,res,pool)
+})
+
 app.get('/search', function(req,res){
     handlers.userSearchHandler(req,res,pool);
 })

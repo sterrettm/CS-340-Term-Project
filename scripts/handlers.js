@@ -245,7 +245,6 @@ function userSearch(req,res,pool){
         res.redirect('../login')
     }else{
         var interestName = req.query.interest
-        console.log(req.query)
         if (interestName != undefined && interestName.length > 0){
             pool.query("SELECT user.username FROM Users AS user JOIN UserInterests AS interest ON interest.userID = user.userID WHERE interest.interest=?",
             [interestName],function(err,results,fields){
@@ -253,13 +252,39 @@ function userSearch(req,res,pool){
                     console.log(err)
                     utils.redirectWithNote(res,"/search","An internal server error occured.")
                 }else{
-                    console.log(results)
-                    res.status(200).render("friendSearch",{results: results, locals: res.locals})
+                    var searchResults = results
+                    pool.query('SELECT * FROM UserInterests WHERE userID=?',[res.locals.userID],function(err,results,fields){
+                        if (err){
+                            utils.redirectWithNote(res,"/search","An internal server error occured.")
+                        }else{
+                            res.status(200).render("friendSearch",{results: searchResults, interests: results, locals: res.locals})
+                        }
+                    })
                 }
             })
         }else{
-            res.status(200).render("friendSearch",{locals: res.locals})
+            pool.query('SELECT * FROM UserInterests WHERE userID=?',[res.locals.userID],function(err,results,fields){
+                if (err){
+                    utils.redirectWithNote(res,"/search","An internal server error occured.")
+                }else{
+                    res.status(200).render("friendSearch",{interests: results, locals: res.locals})
+                }
+            })
         }
+    }
+}
+
+function newInterestPage(req,res,pool){
+    if (res.locals.userID == -1){
+        res.redirect('../login')
+    }else{
+        pool.query('SELECT DISTINCT interest FROM UserInterests',function(err,results,fields){
+            if (err){
+                utils.redirectWithNote(res,"/search","An internal server error occured.")
+            }else{
+                res.status(200).render("newinterest",{allInterests: results, locals: res.locals})
+            }
+        })
     }
 }
 
@@ -274,5 +299,6 @@ module.exports = {
     newFriendHandler: newFriend,
     userSearchHandler: userSearch,
     removeFriendHandler: removeFriend,
-    removeInterestHandler: removeInterest
+    removeInterestHandler: removeInterest,
+    newInterestPageHandler: newInterestPage
 }

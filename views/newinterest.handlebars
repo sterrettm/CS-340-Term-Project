@@ -1,0 +1,51 @@
+<script>
+
+function updateSearch(){
+    var searchText = document.getElementById('searchValue').value
+    
+    var interestList = document.getElementById('interestList')
+    var interests = interestList.children
+    
+    for(var i = 0; i < interests.length; i++){
+        var interestDiv = interests[i]
+        var id = interestDiv.id
+        var interestName = id.split('-').slice(1).join('')
+        console.log(interestName)
+        interestDiv.hidden = interestName.indexOf(searchText) === -1
+    }
+}
+
+function callAddNewInterest(interestName){
+    addNewInterest(interestName, function(){
+        location.href = '/user'
+    }, function(){
+        setNextNotification("Failed to add interest")
+        location.reload()
+    })
+}
+
+</script>
+<main>
+    <div class="mainbody">
+        <div class="formBox">
+            <div><b>Add pre-existing interest</b></div><br>
+            <div>Search pre-existing interests</div>
+            <input id="searchValue" oninput="updateSearch()"></input><br><br>
+            <div id="interestList">
+            {{#each this.allInterests}}
+            <div id='interest-{{this.interest}}'>
+                <span>{{this.interest}}</span>
+                <a class="linkBlue" style="float: right;" onclick="callAddNewInterest('{{this.interest}}')">Add this interest</a>
+                <br>
+            </div>
+            {{/each}}
+            </div>
+        </div><br>
+        
+        <div class="formBox">
+            <div><b>Add completely new interest</b></div><br>
+            <input id="interestName"></input>
+            <button onclick="callAddNewInterest(document.getElementById('interestName').value)">Add new interest</button>
+        </div>
+    </div>
+</main>

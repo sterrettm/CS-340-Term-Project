@@ -11,8 +11,10 @@ function jumpToUserMessages(){
         <div class="formBox">
             <div><b>People you have previously messaged</b></div><br>
             {{#each this.users}}
-            <div><a style="text-align: left;" href="/messages/{{this.username}}">{{this.username}}</a></div>
+            <div><a class="linkBlue" style="text-align: left;" href="/messages/{{this.username}}">{{this.username}}</a></div><br>
             {{/each}}
+        </div><br>
+        <div class="formBox">
             <div><b>Start a conversation with another user</b></div><br>
             <input id="username"></input>
             <button onclick="jumpToUserMessages()">Start conversation</button>

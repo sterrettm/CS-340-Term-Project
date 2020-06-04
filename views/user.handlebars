@@ -27,16 +27,12 @@ function callRemoveInterest(interestName){
             <div>Currently listed interests:</div><br>
             <div>
             {{#each this.interests}}
-            <span style="float: left;">{{this.interest}}</span>
+            <a class="linkBlue" style="float: left;" href="/search/?interest={{encodeURI this.interest}}">{{this.interest}}</a>
             <a class="linkRed" style="float: right;" onclick="callRemoveInterest('{{this.interest}}')">Remove Interest</a>
             <br>
             {{/each}}
-            </div>
-        </div><br>
-        <div class="formBox">
-            <div><b>Add new interest</b></div><br>
-            <input id="interestName"></input>
-            <button onclick="callAddNewInterest()">Add new interest</button>
+            </div><br><br>
+            <a class="boxButton" style="width:90%" href='/newinterest'>Add New Interest</a>
         </div>
     </div>
 </main>
