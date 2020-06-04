@@ -1,7 +1,7 @@
 <script>
 
 function updateSearch(){
-    var searchText = document.getElementById('searchValue').value
+    var searchText = document.getElementById('searchValue').value.toLowerCase()
     
     var interestList = document.getElementById('interestList')
     var interests = interestList.children
@@ -9,8 +9,7 @@ function updateSearch(){
     for(var i = 0; i < interests.length; i++){
         var interestDiv = interests[i]
         var id = interestDiv.id
-        var interestName = id.split('-').slice(1).join('')
-        console.log(interestName)
+        var interestName = id.split('-').slice(1).join('').toLowerCase()
         interestDiv.hidden = interestName.indexOf(searchText) === -1
     }
 }
