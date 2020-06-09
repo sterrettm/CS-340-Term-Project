@@ -1,0 +1,9 @@
+{
+    "host": "classmysql.engr.oregonstate.edu",
+    "port": 3306,
+    "user": "cs340_sterretm",
+    "password": "GhoulCoSQLShell",
+    "database": "cs340_sterretm",
+    "connectionLimit": 99,
+    "multipleStatements": true
+}

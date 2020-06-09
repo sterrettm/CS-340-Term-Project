@@ -5,6 +5,17 @@ function updateFriendSearch(){
     window.location.href = '/search/?interest='+encodeURI(interestName)
 }
 
+function callAddNewFriend(){
+    var newFriendName = document.getElementById('friendUsername').value
+    addNewFriend(newFriendName, function(){
+        location.reload()
+    }, function(){
+        setNextNotification("Failed to add friend")
+        location.reload()
+    })
+}
+
+
 </script>
 <main>
     <div class="mainbody">
@@ -16,9 +27,7 @@ function updateFriendSearch(){
             <a class="linkBlue" href='/user/{{this.username}}'>{{this.username}}</a><br>
             <br>
             {{/each}}
-            </div><br>
-        </div><br>
-        <div class="formBox">
+            </div><br><br>
             <div>Search by your interests</div><br>
             <select name="interest" id="interestName">
             {{#each this.interests}}
@@ -26,6 +35,12 @@ function updateFriendSearch(){
             {{/each}}
             </select>
             <button onclick="updateFriendSearch()">Search by interest</button>
+        </div>
+        <br>
+        <div class="formBox">
+            <div><b>Add new friend by username</b></div><br>
+            <input id="friendUsername"></input>
+            <button onclick="callAddNewFriend()">Add new friend</button>
         </div>
     </div>
 </main>

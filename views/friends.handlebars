@@ -1,15 +1,5 @@
 <script>
 
-function callAddNewFriend(){
-    var newFriendName = document.getElementById('friendUsername').value
-    addNewFriend(newFriendName, function(){
-        location.reload()
-    }, function(){
-        setNextNotification("Failed to add friend")
-        location.reload()
-    })
-}
-
 function callRemoveFriend(username){
     alert("Removing " + username)
     removeFriend(username, function(){
@@ -31,13 +21,8 @@ function callRemoveFriend(username){
                 <a class="linkRed" style="float: right;" onclick="callRemoveFriend('{{this.username}}')">Remove Friend</a>
             </div><br><br>
             {{/each}}
-            <br>
-        </div>
-        <br>
-        <div class="formBox">
-            <div><b>Add new friend by username</b></div><br>
-            <input id="friendUsername"></input>
-            <button onclick="callAddNewFriend()">Add new friend</button>
+            <br><br>
+            <a class="boxButton" style="width:90%" href='/search'>Search for new friends</a>
         </div>
     </div>
 </main>
