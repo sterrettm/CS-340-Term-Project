@@ -10,17 +10,6 @@ BEGIN
     (usrID, tokenStr, NOW(), (NOW() + INTERVAL hoursToExpiry HOUR));
 END $$
 
-
-DROP PROCEDURE IF EXISTS checkLoginToken $$
-CREATE PROCEDURE checkLoginToken(
-IN usrID int(11),
-IN inToken varchar(64),
-OUT matches int(11))
-BEGIN
-    DELETE FROM LoginTokens WHERE expiryDateTime < NOW();
-    SELECT COUNT(*) AS matches FROM LoginTokens WHERE userID = usrID AND token = inToken;
-END $$
-
 DROP PROCEDURE IF EXISTS getFriends $$
 CREATE PROCEDURE getFriends(
 IN userIDIn int(11))
