@@ -93,6 +93,25 @@ function removeFriend(friendName, success, err){
     })
 }
 
+function changePassword(oldPassword, newPassword, success, err){
+    
+    var bodyObject = {oldPassword: oldPassword, newPassword: newPassword}
+    
+    $.ajax({
+        type: "POST",
+        url: "/api/changepassword",
+        data: JSON.stringify(bodyObject),
+        dataType: "json",
+        contentType:"application/json; charset=utf-8",
+        success: function(){
+            success();
+        },
+        error: function(xhr, error){
+            err()
+        }
+    })
+}
+
 function setNextNotification(msg){
     Cookies.set('notification',msg)
 }

@@ -119,6 +119,10 @@ app.post('/api/removefriend', function(req,res){
     handlers.removeFriendHandler(req,res,pool)
 })
 
+app.post('/api/changepassword',function(req,res){
+    auth.changePassword(req,res,pool)
+})
+
 app.listen(port, function(){})
 
 // This heartbeat keeps the MySQL connection from being closed

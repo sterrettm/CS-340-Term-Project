@@ -19,6 +19,17 @@ function callRemoveInterest(interestName){
     })
 }
 
+function callChangePassword(){
+    var oldPassword = document.getElementById('oldPassword').value
+    var newPassword = document.getElementById('newPassword').value
+    changePassword(oldPassword, newPassword, function(){
+        location.reload()
+    }, function(){
+        setNextNotification("Failed to change password")
+        location.reload()
+    })
+}
+
 </script>
 <main>
     <div class="mainbody">
@@ -33,6 +44,12 @@ function callRemoveInterest(interestName){
             {{/each}}
             </div><br><br>
             <a class="boxButton" style="width:90%" href='/newinterest'>Add New Interest</a>
+        </div><br>
+        <div class="formBox">
+            <div>Change Password</div><br>
+            <input id="oldPassword" placeholder="Old Password..." type="password"> </input><br><br>
+            <input id="newPassword" placeholder="New Password..." type="text"> </input><br><br>
+            <a class="boxButton" style="width:90%" onclick='callChangePassword()'>Update Password</a>
         </div>
     </div>
 </main>

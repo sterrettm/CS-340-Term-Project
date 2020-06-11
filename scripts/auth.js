@@ -150,6 +150,46 @@ function signup(req, res, pool){
     })
 }
 
+function changePassword(req, res, pool){
+    
+    var oldPassword = req.body.oldPassword
+    var newPassword = req.body.newPassword
+    
+    var userID = res.locals.userID
+    // Get the hashed password from signup
+    pool.query('SELECT password FROM Users WHERE userID=?',[userID],function(err,results,fields){
+        if (err || results.length != 1){
+            res.sendStatus(500)
+        }else{
+            var hashedPassword = results[0].password
+            bcrypt.compare(oldPassword, hashedPassword, function(err, result){
+                if (err){
+                    res.sendStatus(500)
+                }else if (result){
+                    // Password change succesful
+                    bcrypt.hash(newPassword,14,function(err, hash){
+                        if (err){
+                            res.sendStatus(500)
+                        }else{
+                            pool.query('UPDATE Users SET password=? WHERE userID=?',[hash,userID],function(err,results,fields){
+                                if (err){
+                                    res.sendStatus(500)
+                                }else{
+                                    res.status(200).send(JSON.stringify({}))
+                                }
+                            })
+                        }
+                    })
+                    
+                }else{
+                    // Password change failed
+                    res.sendStatus(401)
+                }
+            })
+        }
+    })
+}
+
 function logout(req, res, pool){
     if (res.locals.userID != -1){
         var userID = res.locals.userID
@@ -172,5 +212,6 @@ module.exports = {
     validateSession: validateSession,
     login: login,
     signup: signup,
-    logout: logout
+    logout: logout,
+    changePassword: changePassword
 }
