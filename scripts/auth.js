@@ -17,10 +17,14 @@ function validateSession(req, res, pool, callback){
         pool.query('DELETE FROM LoginTokens WHERE expiryDateTime < NOW();',function(err, results, fields){
             if (err){
                 res.sendStatus(500)
+                console.log("FAILURE: Failed on deleting old login tokens")
+                callback()
             }else{
                 pool.query('SELECT COUNT(*) AS matches FROM LoginTokens WHERE userID = ? AND token = ?;',[testUserID, testToken],function(err, results, fields){
                     if (err){
                         res.sendStatus(500)
+                        console.log("FAILURE: Failed on checking for validity of login token")
+                        callback()
                     }else{
                         var matchCount = results[0].matches
                         
